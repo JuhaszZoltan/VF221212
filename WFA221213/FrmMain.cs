@@ -17,24 +17,20 @@ namespace WFA221213
             linkGoogle.LinkClicked += OnLinkClicked;
         }
 
-        private void OnLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo(linkGoogle.Text) { UseShellExecute = true });
-        }
+        private void OnLinkClicked(object sender, LinkLabelLinkClickedEventArgs e) 
+            => Process.Start(new ProcessStartInfo(linkGoogle.Text) { UseShellExecute = true });
 
-        private void OnDgvCellClick(object? sender, DataGridViewCellEventArgs e)
-        {
-            linkGoogle.Text = "https://www.google.com/search?q="
-                + dgv[1, e.RowIndex].Value.ToString()!.Replace(' ', '+');
-        }
+        private void OnDgvCellClick(object? sender, DataGridViewCellEventArgs e) 
+            => linkGoogle.Text = "https://www.google.com/search?q="
+            + dgv[1, e.RowIndex].Value.ToString()!.Replace(' ', '+');
 
         private void OnMainFromLoad(object? sender, EventArgs e)
         {
             using SqlConnection conn = new(Resources.ConnectionString);
             conn.Open();
             SqlDataReader rdr = new SqlCommand(
-                "SELECT DISTINCT name FROM genre ORDER BY name ASC;", conn)
-                .ExecuteReader();
+                cmdText: "SELECT DISTINCT name FROM genre ORDER BY name ASC;",
+                connection: conn).ExecuteReader();
             while (rdr.Read()) cbSearch.Items.Add(rdr[0]);
         }
 
